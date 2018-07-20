@@ -37,7 +37,21 @@ df.to_gbq('test.test2', 'gcp-project')
 <div align="center"> 図1. GCPのBigQueryにテーブルが表示される </div>
 
 ## Window関数
+SQLは2011年から2014年までちょこちょことレガシーSQLを使っていた関係で、マジ、MapReduceより何もできなくてダメみたいなことをしばらく思っていたのですが、Standart SQLを一通り触って強い（確信）といたりました。  
+具体的には、様々な操作を行うときに、ビューや一時テーブルを作りまくる必要があったのですが、window関数を用いると、そのようなものが必要なくなってきます。  
 
+Syntaxはこのようなになり、要素の指定のところにそのまま書くことができます。  
+```sql
+RANK() OVER(partition by city order by PercentWhite desc) 
+```
+これは、pandasで書くとこのような意味です。
+```python
+def ranker(df):
+    df = df.sort_values('PercentWhite', ascending=False)
+    df['rank'] = np.arange(len(df)) + 1
+    return df
+df.groupby(by=['City']).apply(ranker)[['City', 'PercentWhite','rank']].head(200)
+```
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
 
