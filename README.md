@@ -110,8 +110,9 @@ select
  ;
 ```
 計算結果をみると、正しく、計算できていることがわかります。  
-```
-```
+<div align="center">
+  <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532104857966_image.png">
+</div>
 
 
 ## なかなかSQLでは難しい操作
