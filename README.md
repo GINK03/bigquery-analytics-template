@@ -79,6 +79,10 @@ select
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
 
+前項ではBigQueryに組み込み関数のRANK関数を用いましたが、これを含め、自身で関数をJavaScriptで定義可能です（可能ならばPythonとかのほうが良かった。。）。  
+
+
+
 ## なかなかSQLでは難しい操作
 
 ## outer source
