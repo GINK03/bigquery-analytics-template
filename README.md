@@ -75,6 +75,7 @@ select
 <div align="center">
   <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532102262039_image.png">
 </div>
+<div align="center"> 図3. window+rank関数によるランキング </div>
 
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
@@ -113,10 +114,22 @@ select
 <div align="center">
   <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532104857966_image.png">
 </div>
+<div align="center"> 図4. UDFによる任意の計算が可能 </div>
 
 
 ## なかなかSQLでは難しい操作
 
+window関数を用いることで、アグリゲートをする際、groupbyしてからテーブルを作りjoinをするというプロセスから開放されました。  
+
+また、BigDataを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので使っていました。  
+BigQueryはcomplex　data processing（プログラミング等で補完することを期待されている）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが回避することができます。  
+
+<div align="center">
+  <img width="600px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532110445693_image.png">
+</div>
+<div align="center"> 図5. BigQuery(Dremel)とMapReduceの比較 </div>
+
+ 
 ## outer source
 
 talking dataのtkmさんのbigqueryでの前処理　　
