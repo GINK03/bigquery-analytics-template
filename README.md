@@ -1,4 +1,4 @@
-#
+#　bigqueryでUDFとwindow関数を使う
 
 ## bigqueryへのpandasからのアップロード
 
@@ -8,9 +8,9 @@
 
 ## なかなかSQLでは難しい操作
 
-
 ## outer source
 
-talking dataのtkmさんのbigqueryでの前処理
+talking dataのtkmさんのbigqueryでの前処理　　
+
 `https://gist.github.com/tkm2261/1b3c3c37753e55ed2914577c0f96d222`
 
