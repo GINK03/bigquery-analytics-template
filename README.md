@@ -60,6 +60,18 @@ df.groupby(by=['City']).apply(ranker)[['City', 'PercentWhite','rank']].head(200)
 
 Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。これはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、BigQueryの優位性が活かせそうです。
 
+**toy problem: ニューヨーク州の街毎の白人の大きさランキング**  
+```sql
+select
+  SchoolName
+  , RANK() over(partition by city order by PercentWhite desc)
+  , city
+  , PercentWhite
+ from
+  test.test
+ ;
+```
+出力
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
 
