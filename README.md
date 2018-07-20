@@ -60,6 +60,8 @@ df.groupby(by=['City']).apply(ranker)[['City', 'PercentWhite','rank']].head(200)
 
 Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。これはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、BigQueryの優位性が活かせそうです。
 
+なお、window関数は他にもさまざまな機能があり、[GCPの公式ドキュメント](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)が最も整理されており、便利です。
+
 **toy problem: ニューヨーク州の街毎の白人の大きさランキング**  
 ```sql
 select
