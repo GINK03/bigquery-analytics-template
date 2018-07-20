@@ -34,7 +34,7 @@ df.to_gbq('test.test2', 'gcp-project')
 <div align="center">
   <img width="400px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532098422942_image.png">
 </div>
-<div aling="center"> 図1. GCPのBigQueryにテーブルが表示される </div>
+<div align="center"> 図1. GCPのBigQueryにテーブルが表示される </div>
 
 ## Window関数
 
