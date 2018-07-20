@@ -137,5 +137,7 @@ BigQueryはcomplex　data processing（プログラミング等で補完する�
  - [talking dataのtkmさんのbigqueryでの前処理](https://gist.github.com/tkm2261/1b3c3c37753e55ed2914577c0f96d222)
  
  - [An Inside Look at Google BigQuery](https://cloud.google.com/files/BigQueryTechnicalWP.pdf)
+ 
+ - [分析関数](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)
 
 
