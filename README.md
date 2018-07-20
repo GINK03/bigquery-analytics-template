@@ -117,7 +117,7 @@ select
 <div align="center"> 図4. UDFによる任意の計算が可能 </div>
 
 
-## なかなかSQLでは難しい操作
+## なかなかレガシーSQLでは難しかった操作ができる
 
 window関数を用いることで、アグリゲートをする際、groupbyしてからテーブルを作りjoinをするというプロセスから開放されました。  
 
@@ -132,7 +132,8 @@ BigQueryはcomplex　data processing（プログラミング等で補完する�
  
 ## outer source
 
-talking dataのtkmさんのbigqueryでの前処理　　
+ - [talking dataのtkmさんのbigqueryでの前処理](https://gist.github.com/tkm2261/1b3c3c37753e55ed2914577c0f96d222)
+ 
+ - [An Inside Look at Google BigQuery](https://cloud.google.com/files/BigQueryTechnicalWP.pdf)
 
-`https://gist.github.com/tkm2261/1b3c3c37753e55ed2914577c0f96d222`
 
