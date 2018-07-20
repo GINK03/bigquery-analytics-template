@@ -81,6 +81,37 @@ select
 
 前項ではBigQueryに組み込み関数のRANK関数を用いましたが、これを含め、自身で関数をJavaScriptで定義可能です（可能ならばPythonとかのほうが良かった。。）。  
 
+JavaScriptで記述するという側面さえ除けば、かなり万能に近い書き方も可能になりますので、こんな不思議なことを計算することもできます。(おそらく、もっと効率の良い方法があると思いますが)  
+
+**window関数内部で値の最大値の大きさを1として変形を行う** 
+白人のパーセンテージを最大にしめる割合を１としてノーマライズします。  
+
+`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書くことができます
+
+```sql
+CREATE TEMPORARY FUNCTION norm(xs ARRAY<STRING>, rank INT64)
+RETURNS FLOAT64
+LANGUAGE js AS """
+  const xs2 = xs.map( x => x.replace("%", "") ).map( x => parseFloat(x) )
+  const max = Math.max.apply(null, xs2)
+  const xs3 = xs2.map( x => x/max ).map( x => x.toString() )
+  return xs3[rank-1];
+  """;
+select 
+  SchoolName
+  ,norm( 
+    ARRAY_AGG(PercentWhite) over(partition by city order by PercentWhite desc) ,
+    Rank() over(partition by city order by PercentWhite desc) 
+  )
+  ,city
+  , PercentWhite
+ from
+  test.test
+ ;
+```
+計算結果をみると、正しく、計算できていることがわかります。  
+```
+```
 
 
 ## なかなかSQLでは難しい操作
