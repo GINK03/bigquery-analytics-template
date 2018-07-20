@@ -52,6 +52,14 @@ def ranker(df):
     return df
 df.groupby(by=['City']).apply(ranker)[['City', 'PercentWhite','rank']].head(200)
 ```
+<div align="center">
+  <img width="700px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532101462609_image.png">
+</div>
+<div align="center"> 図2. 処理フロー </div>
+
+
+Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。これはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、BigQueryの優位性が活かせそうです。
+
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
 
