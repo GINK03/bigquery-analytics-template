@@ -1,19 +1,21 @@
 
 # bigqueryでUDFとwindow関数を使う　
 
-転職してからMapReduceそのもののサービスや改良したサービスであるCloud DataFlowなどのサービスより、初手BigQueryが用いられることが増えてきました。分析環境でのプラットフォームを何にするかの文化でしょう。　
+転職してからMapReduceそのもののサービスや改良したサービスであるCloud DataFlowなどのサービスより、初手BigQueryが用いられることが増えてきました。分析環境でのプラットフォームを何にするかの文化の違いでしょう。　
 
-BigQueryの優れた面がLegacy　SQLを使っていたときほとんどなにもないのでは、と考えていたこともあったのですが、Standart　SQLならばWindow関数を利用し、さらに非構造化データに対してもUser Define Functionを用いることでJavaScriptをアドホックに用いることで、かなり良いところまで行けるということがわかりました。  
+BigQueryの優れた面がLegacy SQLを使っていたときは、なにもないのでは、と考えていたこともあったのですが、Standard SQLならばWindow関数を利用し、さらに非構造化データに対してもUser Define Functionをアドホックに用いることで、かなり良いところまで行けるということがわかりました。  
 
 window関数の例と、User Define Functionとの組み合わを記します。
 
 ## bigqueryへのpandasからのアップロード
-pandasで読み取って、このpandasの型情報のまま転送することができる  
+pandasでcsv等を読み取って、pandas-gbqを使うと、pandasの型情報のまま転送することができるので、この方法は体得しておくと便利です。  
 
+**pandas-gbqのインストール**
 (AnacondaのPythonがインストールされているという前提で勧めます)  
 ```console
 $ conda install pandas-gbq --channel conda-forge
 ```
+
 サンプルデータセットとして、Kaggle Open Datasetの[data-science-for-good](https://www.kaggle.com/passnyc/data-science-for-good/home)という、ニューヨーク州の学校の情報のデータセットを利用します。  
 
 デーブルデータはこの様になっています。全部は写っていなく、一部になります。  
@@ -40,13 +42,15 @@ df.to_gbq('test.test2', 'gcp-project')
 <div align="center">
   <img width="400px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532098422942_image.png">
 </div>
-<div align="center"> 図1. GCPのBigQueryにテーブルが表示される </div>
+<div align="center"> 図1. GCPのBigQueryにテーブルが表示されることを確認 </div>
 
 ## Window関数
-SQLは2011年から2014年までちょこちょことレガシーSQLを使っていた関係で、マジ、MapReduceより何もできなくてダメみたいなことをしばらく思っていたのですが、Standart SQLを一通り触って強い（確信）といたりました。  
+SQLは2011年から2014年まで某データウェアハウスのレガシーSQLを使っていた関係で、マジ、MapReduceより何もできなくてダメみたいなことをしばらく思っていたのですが、Standart SQLを一通り触って強い（確信）といたりました。  
+
 具体的には、様々な操作を行うときに、ビューや一時テーブルを作りまくる必要があったのですが、window関数を用いると、そのようなものが必要なくなってきます。  
 
-Syntaxはこのようなになり、data-science-for-goodで街粒度で分割し、白人率でソートして、ランキングするとこのようなクエリになります。  
+Syntaxはこのようなになり、data-science-for-goodのデータセットを街粒度で分割し、白人率でソートして、ランキングするとこのようなクエリになります。  
+
 ```sql
 RANK() OVER(partition by city order by PercentWhite desc) 
 ```
@@ -71,8 +75,7 @@ BigQueryのwindow関数もpandasのgroupby.applyも似たようなフローに�
 </div>
 <div align="center"> 図3. 処理フロー </div>
 
-
-Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。BigQueryはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、優位性が活かせそうです。
+処理フローとしてはこの様になっています。BigQueryはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、優位性が活かせそうです。
 
 なお、window関数は他にもさまざまな機能があり、[GCPの公式ドキュメント](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)が最も整理されており、便利です。
 
@@ -96,9 +99,9 @@ select
 
 ## Standerd SQLでUDF(UserDefinedFunction)を定義する
 
-前項ではBigQueryに組み込み関数のRANK関数を用いましたが、これを含め、自身で関数をJavaScriptで定義可能です（可能ならばPythonとかのほうが良かった。。）。  
+前項ではBigQueryに組み込み関数のRANK関数を用いましたが、これを含め、自身で関数をJavaScriptで定義可能です。  
 
-JavaScriptで記述するという側面さえ除けば、かなり万能に近い書き方も可能になりますので、こんな不思議なことを計算することもできます。(おそらく、もっと効率の良い方法があると思いますが)  
+JavaScriptで記述するという制約さえ除けば、かなり万能に近い書き方も可能になりますので、こんな不思議なことを計算することもできます。(おそらく、もっと効率の良い方法があると思いますが)  
 
 **window関数で特定の値のノーマライズを行う** 
 白人のパーセンテージをその街で最大にしめる大きさを１としてノーマライズします。  
@@ -136,7 +139,7 @@ select
 
 学校の街ごとの収入に、自分よりも前のrowとの収入の差を求める。  
 
-lag関数でも簡単に求めることができますが、JSの力とrank関数を使うことでこのようにして、rowベースの操作すらもできます。  
+lag関数でも簡単に求めることができますが、JSの力とrow_number関数を使うことでこのようにして、rowベースの操作すらもできます。  
 
 ```sql
 #standardSQL
@@ -182,13 +185,13 @@ window関数を用いることで、アグリゲートをする際、groupbyし�
 
 MapReduceを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので、どのようなケースにも応用しやすく、使っていました。  
 
-MapReduceに比べて、BigQueryはcomplex　data processing（プログラミング等でアドホックな処理など）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが行うことができます。  
 
 <div align="center">
   <img width="600px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532110445693_image.png">
 </div>
 <div align="center"> 図7. BigQuery(Dremel)とMapReduceの比較 </div>
 
+MapReduceに比べて、BigQueryはcomplex data processing（プログラミング等でアドホックな処理など）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが行うことができます。  
  
 ## outer source
 
