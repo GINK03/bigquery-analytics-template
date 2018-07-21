@@ -103,7 +103,7 @@ JavaScriptで記述するという側面さえ除けば、かなり万能に近�
 **window関数で特定の値のノーマライズを行う** 
 白人のパーセンテージをその街で最大にしめる大きさを１としてノーマライズします。  
 
-UDFは`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書くことができます
+UDFは`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書きます
 
 ```sql
 CREATE TEMPORARY FUNCTION norm(xs ARRAY<STRING>, rank INT64)
@@ -173,12 +173,16 @@ from
 </div>
 <div align="center"> 図6. 前のrowとの差を計算する </div>
 
+このように列だけでな行方向にも拡張された操作ができ、万能とはこういう事を言うんでしょうか
+
+
 ## なかなかレガシーSQLでは難しかった操作ができる
 
-window関数を用いることで、アグリゲートをする際、groupbyしてからテーブルを作りjoinをするというプロセスから開放されました。  
+window関数を用いることで、アグリゲートをする際、groupbyしてからビューを作りjoinをするというプロセスから開放されました。  
 
-また、BigDataを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので、どのようなケースにも応用しやすく、使っていました。  
-BigQueryはcomplex　data processing（プログラミング等で補完することを期待されている）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが回避することができます。  
+MapReduceを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので、どのようなケースにも応用しやすく、使っていました。  
+
+MapReduceに比べて、BigQueryはcomplex　data processing（プログラミング等でアドホックな処理など）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが行うことができます。  
 
 <div align="center">
   <img width="600px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532110445693_image.png">
