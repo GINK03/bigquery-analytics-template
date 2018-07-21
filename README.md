@@ -8,13 +8,13 @@ BigQueryの優れた面がLegacy　SQLを使っていたときほとんどなに
 window関数の例と、User Define Functionとの組み合わを記します。
 
 ## bigqueryへのpandasからのアップロード
-pandasで読み取って、このpandasの構造のまま転送することができる  
+pandasで読み取って、このpandasの型情報のまま転送することができる  
 
 (AnacondaのPythonがインストールされているという前提で勧めます)  
 ```console
 $ conda install pandas-gbq --channel conda-forge
 ```
-Kaggle Open Datasetの[data-science-for-good](https://www.kaggle.com/passnyc/data-science-for-good/home)という、ニューヨーク州の学校の情報のデータセットを利用します。  
+サンプルデータセットとして、Kaggle Open Datasetの[data-science-for-good](https://www.kaggle.com/passnyc/data-science-for-good/home)という、ニューヨーク州の学校の情報のデータセットを利用します。  
 
 デーブルデータはこの様になっています。全部は写っていなく、一部になります。  
 <div align="center">
@@ -26,7 +26,7 @@ import pandas as pd
 pd.set_option("display.max_columns", 120)
 df = pd.read_csv('./2016 School Explorer.csv')
 
-# カラム名がアンダーバーと半角英数字以外認めないので、その他を消します
+# BigQueryはカラム名がアンダーバーと半角英数字以外認めないので、その他を消します
 def replacer(c):
     for r in [' ', '?', '(', ')','/','%', '-']:
         c = c.replace(r, '')
@@ -46,7 +46,7 @@ df.to_gbq('test.test2', 'gcp-project')
 SQLは2011年から2014年までちょこちょことレガシーSQLを使っていた関係で、マジ、MapReduceより何もできなくてダメみたいなことをしばらく思っていたのですが、Standart SQLを一通り触って強い（確信）といたりました。  
 具体的には、様々な操作を行うときに、ビューや一時テーブルを作りまくる必要があったのですが、window関数を用いると、そのようなものが必要なくなってきます。  
 
-Syntaxはこのようなになり、要素の指定のところにそのまま書くことができます。  
+Syntaxはこのようなになり、data-science-for-goodで街粒度で分割し、白人率でソートして、ランキングするとこのようなクエリになります。  
 ```sql
 RANK() OVER(partition by city order by PercentWhite desc) 
 ```
@@ -56,7 +56,6 @@ RANK() OVER(partition by city order by PercentWhite desc)
 </div>
 <div align="center"> 図2. </div>
 
-
 これは、pandasで書くとこのような意味です。
 ```python
 def ranker(df):
@@ -65,6 +64,8 @@ def ranker(df):
     return df
 df.groupby(by=['City']).apply(ranker)[['City', 'PercentWhite','rank']].head(200)
 ```
+
+BigQueryのwindow関数もpandasのgroupby.applyも似たようなフローになっています。  
 <div align="center">
   <img width="700px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532101462609_image.png">
 </div>
