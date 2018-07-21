@@ -76,7 +76,7 @@ Aggは別にsumやmeanなどの集約である必要もなないのですが、�
 
 なお、window関数は他にもさまざまな機能があり、[GCPの公式ドキュメント](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)が最も整理されており、便利です。
 
-**toy problem: ニューヨーク州の街毎の白人の大きさランキング**  
+**toy problem: ニューヨーク州の街毎の白人率の大きさランキング**  
 ```sql
 select
   SchoolName
@@ -100,10 +100,10 @@ select
 
 JavaScriptで記述するという側面さえ除けば、かなり万能に近い書き方も可能になりますので、こんな不思議なことを計算することもできます。(おそらく、もっと効率の良い方法があると思いますが)  
 
-**window関数内部で値の最大値の大きさを1として変形を行う** 
-白人のパーセンテージを最大にしめる割合を１としてノーマライズします。  
+**window関数で特定の値のノーマライズを行う** 
+白人のパーセンテージをその街で最大にしめる大きさを１としてノーマライズします。  
 
-`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書くことができます
+UDFは`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書くことができます
 
 ```sql
 CREATE TEMPORARY FUNCTION norm(xs ARRAY<STRING>, rank INT64)
