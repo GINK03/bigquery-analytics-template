@@ -155,7 +155,7 @@ from
 ```
 
 <div align="center">
-  <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532139258390_image.png">
+  <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532139530095_image.png">
 </div>
 <div align="center"> 図5. 前のrowとの差を計算する </div>
 
