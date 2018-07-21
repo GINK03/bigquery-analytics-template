@@ -10,7 +10,8 @@ window関数の例と、User Define Functionとの組み合わを記します。
 ## bigqueryへのpandasからのアップロード
 pandasでcsv等を読み取って、pandas-gbqを使うと、pandasの型情報のまま転送することができるので、この方法は体得しておくと便利です。  
 
-**pandas-gbqのインストール**
+**pandas-gbqのインストール**  
+
 (AnacondaのPythonがインストールされているという前提で勧めます)  
 ```console
 $ conda install pandas-gbq --channel conda-forge
@@ -103,7 +104,8 @@ select
 
 JavaScriptで記述するという制約さえ除けば、かなり万能に近い書き方も可能になりますので、こんな不思議なことを計算することもできます。(おそらく、もっと効率の良い方法があると思いますが)  
 
-**window関数で特定の値のノーマライズを行う** 
+**window関数で特定の値のノーマライズを行う**   
+
 白人のパーセンテージをその街で最大にしめる大きさを１としてノーマライズします。  
 
 UDFは`CREATE TEMPORARY FUNCTION`で入出力の値と型決めて、このように書きます
@@ -181,7 +183,7 @@ from
 
 ## なかなかレガシーSQLでは難しかった操作ができる
 
-window関数を用いることで、アグリゲートをする際、groupbyしてからビューを作りjoinをするというプロセスから開放されました。  
+window関数を用いることで、アグリゲートをする際、groupbyしてからビューを作りjoinをするというプロセスから解放されました。  
 
 MapReduceを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので、どのようなケースにも応用しやすく、使っていました。  
 
@@ -192,6 +194,7 @@ MapReduceを扱う際のモチベーションが、膨大なデータをHash関�
 <div align="center"> 図7. BigQuery(Dremel)とMapReduceの比較 </div>
 
 MapReduceに比べて、BigQueryはcomplex data processing（プログラミング等でアドホックな処理など）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが行うことができます。  
+
  
 ## outer source
 
@@ -202,7 +205,7 @@ MapReduceに比べて、BigQueryはcomplex data processing（プログラミン�
  - [分析関数](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)
 
 ## codes
-[https://github.com/GINK03/bigquery-analytics-template]
+[https://github.com/GINK03/bigquery-analytics-template:embed]
 
 SQLの実行の仕方はコマンドでやるとき、こうするとめっちゃ便利です
 ```cosnole
