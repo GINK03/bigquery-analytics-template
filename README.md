@@ -180,4 +180,5 @@ BigQueryはcomplex　data processing（プログラミング等で補完する�
  
  - [分析関数](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)
 
-
+## codes
+[https://github.com/GINK03/bigquery-analytics-template]
