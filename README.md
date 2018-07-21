@@ -211,3 +211,8 @@ SQLの実行の仕方はコマンドでやるとき、こうするとめっち�
 ```cosnole
 $ bq query "$(cat bq-window-lag.sql)"
 ```
+
+他にもこんな手もあります（少しタイプ数が減る）
+```cosnole
+$ cat bq-window-lag.sql | bq query
+```
