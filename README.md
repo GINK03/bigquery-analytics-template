@@ -1,9 +1,11 @@
 
 # bigqueryでUDFとwindow関数を使う　
 
-転職してからMapReduceそのもののサービスや改良したサービスであるCloud DataFlowなどのサービスより、初手BigQueryが用いられることが増えてきました。分析環境でのプラットフォームを何にするかの文化でしょうが、BigQueryの優れた面がLegacy　SQLを使っていたときほとんどなにもないのでは、と考えていたのですが、Standart　SQLならばWindow関数を利用し、さらに非構造化データに関してはJavaScriptをアドホックに用いることで、かなり万能であるという事がわかりました。  
+転職してからMapReduceそのもののサービスや改良したサービスであるCloud DataFlowなどのサービスより、初手BigQueryが用いられることが増えてきました。分析環境でのプラットフォームを何にするかの文化でしょう。　
 
-スキルセットの更新と、コンペティションに耐えられる分析速度を獲得することを目的としています。
+BigQueryの優れた面がLegacy　SQLを使っていたときほとんどなにもないのでは、と考えていたこともあったのですが、Standart　SQLならばWindow関数を利用し、さらに非構造化データに対してもUser Define Functionを用いることでJavaScriptをアドホックに用いることで、かなり良いところまで行けるということがわかりました。  
+
+window関数の例と、User Define Functionとの組み合わを記します。
 
 ## bigqueryへのpandasからのアップロード
 pandasで読み取って、このpandasの構造のまま転送することができる  
