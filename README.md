@@ -118,12 +118,52 @@ select
 </div>
 <div align="center"> 図4. UDFによる任意の計算が可能 </div>
 
+**lag関数を使わずに前のrowの値との差を計算する**   
+
+学校の街ごとの収入に、自分よりも前のrowとの収入の差を求める。  
+
+lag関数でも簡単に求めることができますが、JSの力とrank関数を使うことでこのようにして、rowベースの操作すらもできます。  
+
+```sql
+#standardSQL
+CREATE TEMPORARY FUNCTION prev(xs ARRAY<STRING>, rank INT64)
+RETURNS FLOAT64
+LANGUAGE js AS """
+  const xs1 = xs.map( function(x) {
+    if( x == null ) 
+      return "0"; 
+    else 
+      return x;
+  });
+  const xs2 = xs1.map( x => x.replace(",", "") ).map( x => x.replace("$", "") ).map( x => parseFloat(x) );
+  const ret = xs2[rank-1-1] - xs2[rank-1];
+  if( ret == null || isNaN(ret)) 
+    return 0.0;
+  else
+    return ret
+  """;
+select 
+  SchoolName
+  ,prev( 
+    ARRAY_AGG(SchoolIncomeEstimate) over(partition by city order by SchoolIncomeEstimate desc) ,
+    Rank() over(partition by city order by SchoolIncomeEstimate desc) 
+  )
+  ,city
+  ,SchoolIncomeEstimate
+from
+  test.test;
+```
+
+<div align="center">
+  <img width="750px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_395C846F6BB54334ACB188FAC2F01C0FF7D15E56852EC0E8EFD1BA2A22439502_1532139258390_image.png">
+</div>
+<div align="center"> 図5. 前のrowとの差を計算する </div>
 
 ## なかなかレガシーSQLでは難しかった操作ができる
 
 window関数を用いることで、アグリゲートをする際、groupbyしてからテーブルを作りjoinをするというプロセスから開放されました。  
 
-また、BigDataを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので使っていました。  
+また、BigDataを扱う際のモチベーションが、膨大なデータをHash関数で写像空間にエンベッティングして、シャーディングするという基本的な仕組みを理解していたので、どのようなケースにも応用しやすく、使っていました。  
 BigQueryはcomplex　data processing（プログラミング等で補完することを期待されている）を行うことができないとされていますが、User Deine Functionを用いればJavaScriptでの表現に限定されますが回避することができます。  
 
 <div align="center">
