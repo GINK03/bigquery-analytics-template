@@ -200,3 +200,8 @@ MapReduceに比べて、BigQueryはcomplex　data processing（プログラミ�
 
 ## codes
 [https://github.com/GINK03/bigquery-analytics-template]
+
+SQLの実行の仕方はコマンドでやるとき、こうするとめっちゃ便利です
+```cosnole
+$ bq query "$(cat bq-window-lag.sql)"
+```
