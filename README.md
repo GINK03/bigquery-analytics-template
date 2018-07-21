@@ -72,7 +72,7 @@ BigQueryのwindow関数もpandasのgroupby.applyも似たようなフローに�
 <div align="center"> 図3. 処理フロー </div>
 
 
-Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。これはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、BigQueryの優位性が活かせそうです。
+Aggは別にsumやmeanなどの集約である必要もなないのですが、処理フローとしてはこの様になっています。BigQueryはPandasに比べて圧倒的に早いらしいので、ビッグデータになるにつれて、優位性が活かせそうです。
 
 なお、window関数は他にもさまざまな機能があり、[GCPの公式ドキュメント](https://cloud.google.com/bigquery/sql-reference/functions-and-operators?hl=ja#analytic-functions)が最も整理されており、便利です。
 
