@@ -130,7 +130,7 @@ lag関数でも簡単に求めることができますが、JSの力とrank関�
 
 ```sql
 #standardSQL
-CREATE TEMPORARY FUNCTION prev(xs ARRAY<STRING>, rank INT64)
+CREATE TEMPORARY FUNCTION prev(xs ARRAY<STRING>, index INT64)
 RETURNS FLOAT64
 LANGUAGE js AS """
   const xs1 = xs.map( function(x) {
@@ -140,7 +140,7 @@ LANGUAGE js AS """
       return x;
   });
   const xs2 = xs1.map( x => x.replace(",", "") ).map( x => x.replace("$", "") ).map( x => parseFloat(x) );
-  const ret = xs2[rank-1-1] - xs2[rank-1];
+  const ret = xs2[index-1-1] - xs2[index-1];
   if( ret == null || isNaN(ret)) 
     return 0.0;
   else
@@ -150,7 +150,7 @@ select
   SchoolName
   ,prev( 
     ARRAY_AGG(SchoolIncomeEstimate) over(partition by city order by SchoolIncomeEstimate desc) ,
-    Rank() over(partition by city order by SchoolIncomeEstimate desc) 
+    row_number() over(partition by city order by SchoolIncomeEstimate desc) 
   )
   ,city
   ,SchoolIncomeEstimate
